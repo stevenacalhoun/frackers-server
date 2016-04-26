@@ -16,7 +16,7 @@ namespace :csv_import do
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     )
 
-    data = s3.bucket('frackers-data').object('key').get(response_target: 'WellData.csv')
+    data = s3.bucket('frackers-data').object('WellData.csv')
     csvData = CSV.parse(data, :headers => false)
     csvData.each do |row|
       WellEntry.create(id: row[0], owner: row[1], latitude: row[2], longitude: row[3], state: row[4], city: row[5])
