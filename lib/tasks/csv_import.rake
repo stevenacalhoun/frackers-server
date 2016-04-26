@@ -23,6 +23,32 @@ namespace :csv_import do
     end
   end
 
+  task aws_pollution_entry: :environment do
+    s3 = Aws::S3::Resource.new(
+      region: 'us-east-1',
+      access_key_id: ENV['AWS_ACCESS_KEY_ID'],
+      secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
+    )
+
+    data = s3.bucket('frackers-data').object('PollutionData.csv').get
+
+    @i = 0
+    @count = 0
+    data.body.each do |line|
+      begin
+        @count += 1
+        line = line.gsub("\u0000", '')
+        CSV.parse(line) do |row|
+          PollutionEntry.create(latitude: row[4], longitude: row[5], country_code: row[6], state_code: row[7], project_id: row[11], location_id: row[12], characteristic_name: row[13], start_date: row[9], end_date: row[10], value: row[14], unit_code: row[15])
+        end
+      rescue => e
+        @i = @i + 1
+        puts e
+        puts "Bad Pollution Line: " + @count.to_s + "(" + @i.to_s + ")"
+      end
+    end
+  end
+
   task well_data: :environment do
     csv_text = File.read('data/WellData.csv')
     csv = CSV.parse(csv_text, :headers => false)
