@@ -47,6 +47,7 @@ namespace :csv_import do
         puts "Bad Pollution Line: " + @count.to_s + "(" + @i.to_s + ")"
       end
     end
+    puts "Total Bad " + @i.to_s
   end
 
   task well_data: :environment do
