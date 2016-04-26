@@ -17,7 +17,7 @@ namespace :csv_import do
     )
 
     data = s3.bucket('frackers-data').object('WellData.csv')
-    csvData = CSV.parse(data, :headers => false)
+    csvData = CSV.parse(data.body, :headers => false)
     csvData.each do |row|
       WellEntry.create(id: row[0], owner: row[1], latitude: row[2], longitude: row[3], state: row[4], city: row[5])
     end
