@@ -13,6 +13,9 @@
 
 ActiveRecord::Schema.define(version: 20160425171759) do
 
+  # These are extensions that must be enabled in order to support this database
+  enable_extension "plpgsql"
+
   create_table "pollution_entries", force: :cascade do |t|
     t.datetime "created_at",          null: false
     t.datetime "updated_at",          null: false
@@ -51,11 +54,6 @@ ActiveRecord::Schema.define(version: 20160425171759) do
     t.datetime "updated_at",            null: false
     t.string   "ingredient_key"
     t.string   "purpose_key"
-  end
-
-  create_table "well_ingridents", force: :cascade do |t|
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "well_purposes", force: :cascade do |t|
