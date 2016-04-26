@@ -23,14 +23,14 @@ namespace :csv_import do
     end
   end
 
-  task aws_pollution_entry: :environment do
+  task :aws_pollution_entry, [:file_section] => :environment do |t, args|
     s3 = Aws::S3::Resource.new(
       region: 'us-east-1',
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     )
 
-    data = s3.bucket('frackers-data').object('PollutionData.csv').get
+    data = s3.bucket('frackers-data').object('PollutionData'+args[:file_section]+'.csv').get
 
     @i = 0
     @count = 0
