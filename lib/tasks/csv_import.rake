@@ -30,7 +30,7 @@ namespace :csv_import do
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     )
 
-    data = s3.bucket('frackers-data').object('PollutionData'+args[:file_section]+'.csv').get
+    data = s3.bucket('frackers-data').object('PollutionData-'+args[:file_section]+'.csv').get
 
     @i = 0
     @count = 0
