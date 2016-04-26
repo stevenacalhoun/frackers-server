@@ -11,15 +11,16 @@ namespace :csv_import do
 
   task aws_well_data: :environment do
     s3 = Aws::S3::Resource.new(
-      region: 'region',
+      region: 'us-east-1',
       access_key_id: ENV['AWS_ACCESS_KEY_ID'],
       secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
     )
-    data = s3.bucket(ENV['S3_BUCKET_NAME']).object('WellData.csv').get
+
+    data = s3.bucket('frackers-data').object('key').get(response_target: 'WellData.csv')
     csvData = CSV.parse(data, :headers => false)
     csvData.each do |row|
       WellEntry.create(id: row[0], owner: row[1], latitude: row[2], longitude: row[3], state: row[4], city: row[5])
-    end    
+    end
   end
 
   task well_data: :environment do
